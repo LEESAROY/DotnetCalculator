@@ -9,6 +9,9 @@ namespace Calculator{
                 case "*":
                     result = Multiply.Eval(Operands[0], Operands[1]);
                     break;
+                case "-":
+                    result = Subtract.Eval(Operands[0], Operands[1]);
+                    break;
                 default:
                     throw new Exception("unimplemented");
             }
