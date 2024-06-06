@@ -78,4 +78,48 @@ public class CalculatorTests
     {
         Assert.Equal(4, Evaluator.Eval("-", 6, 2));
     }
+    [Fact]
+    public void TestExitOperation()
+    {
+        var exitInput = new StringReader("4\n");
+        Console.SetIn(exitInput);
+        var exitOperationProcess = new System.Diagnostics.Process();
+        exitOperationProcess.StartInfo.FileName = "dotnet";
+        exitOperationProcess.StartInfo.Arguments = "run";
+        exitOperationProcess.StartInfo.UseShellExecute = false;
+        exitOperationProcess.StartInfo.RedirectStandardInput = true;
+        exitOperationProcess.Start();
+        exitOperationProcess.WaitForExit();
+        Assert.True(exitOperationProcess.HasExited);
+
+    }
+
+    [Fact]
+    public void TestContinueFunction()
+    {
+        var continueInput = new StringReader("1\n10\n4\n4\nno\n");
+        Console.SetIn(continueInput);
+        var continueFunctionProcess = new System.Diagnostics.Process();
+        continueFunctionProcess.StartInfo.FileName = "dotnet";
+        continueFunctionProcess.StartInfo.Arguments = "run";
+        continueFunctionProcess.StartInfo.UseShellExecute = false;
+        continueFunctionProcess.StartInfo.RedirectStandardInput = true;
+        continueFunctionProcess.Start();
+        continueFunctionProcess.WaitForExit();
+        Assert.True(continueFunctionProcess.HasExited);
+    }
+    [Fact]
+    public void TestValidOperation()
+    {
+        var validInput = new StringReader("5\n1\n10\n5\n3\n4\nno\n");
+        Console.SetIn(validInput);
+        var validOperationProcess = new System.Diagnostics.Process();
+        validOperationProcess.StartInfo.FileName = "dotnet";
+        validOperationProcess.StartInfo.Arguments = "run";
+        validOperationProcess.StartInfo.UseShellExecute = false;
+        validOperationProcess.StartInfo.RedirectStandardInput = true;
+        validOperationProcess.Start();
+        validOperationProcess.WaitForExit();
+        Assert.True(validOperationProcess.HasExited);
+    }
 }
