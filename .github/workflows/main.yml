@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -26,10 +26,25 @@ jobs:
     - name: Build project
       run: dotnet build --no-restore
 
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.205'
+
+    - name: Install dependencies
+      run: dotnet restore
+
     - name: Run unit tests
       run: dotnet test --no-build --verbosity normal
 
-  lint-and-format:
+  Code-Quality-and-format:
     runs-on: ubuntu-latest
     needs: build-and-test
     steps:
@@ -41,5 +56,8 @@ jobs:
       with:
         dotnet-version: '8.0.205'
 
-    - name: Run code analysis
+    - name: Install dotnet-format tool
+      run: dotnet tool install -g dotnet-format
+
+    - name: Run code formatting check
       run: dotnet format --check
