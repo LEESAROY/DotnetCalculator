@@ -43,7 +43,7 @@ jobs:
 
     - name: Run unit tests with coverage
       run: |
-        dotnet test --no-build --collect:"XPlat Code Coverage"
+        dotnet test --collect:"XPlat Code Coverage" --logger trx
       env:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
 
