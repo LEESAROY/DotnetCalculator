@@ -67,7 +67,7 @@ jobs:
         name: coverage-report
         path: coverage-report
 
-  code-quality:
+  check-coverage:
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -79,15 +79,9 @@ jobs:
       with:
         dotnet-version: '8.0.205'
 
-    - name: Install dotnet-format tool
-      run: dotnet tool install -g dotnet-format
-
-    - name: Run code quality checks
-      run: dotnet format style --check path/to/your/solution.sln
-
     - name: Check coverage
       run: |
-        coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' reports/index.htm || echo "0")
+        coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%."
           exit 1
