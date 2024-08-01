@@ -71,26 +71,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.205'
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.205'
 
-    - name: Install dotnet-format tool
-      run: dotnet tool install -g dotnet-format
+      - name: Install dotnet-format tool
+        run: dotnet tool install -g dotnet-format
 
-    - name: Run code quality checks
-      run: |
-        cd DotnetCalculator # Adjust path if necessary
-        dotnet format --check
+      - name: List directory contents
+        run: ls -R
 
-    - name: Check coverage
-      run: |
-        coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
-        if [ "$coverage_percentage" -lt 90 ]; then
-          echo "Test coverage is below 90%."
-          exit 1
-        fi
+      - name: Run code quality checks
+        run: |
+          cd path/to/your/project # Adjust path if necessary
+          dotnet format --check
+
+      - name: Check coverage
+        run: |
+          coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
+          if [ "$coverage_percentage" -lt 90 ]; then
+            echo "Test coverage is below 90%."
+            exit 1
+          fi
