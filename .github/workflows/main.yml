@@ -75,7 +75,7 @@ jobs:
 
     - name: Check coverage
       run: |
-        # Extract coverage percentage from the report (adapt based on your report format)
+        # Extract coverage percentage from the report
         coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%."
