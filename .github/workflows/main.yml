@@ -43,10 +43,9 @@ jobs:
 
     - name: Run unit tests with coverage
       run: |
-        dotnet test --no-build --collect:"XPlat Code Coverage"
+        dotnet test --no-build --collect:"XPlat Code Coverage" --logger:trx
         dotnet tool install -g dotnet-reportgenerator-globaltool
         reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
-      # Ensure `reportgenerator` can be used in the path
       env:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
 
@@ -73,9 +72,8 @@ jobs:
 
     - name: Run code quality checks
       run: dotnet format --check
-      # The above command only checks formatting and does not output coverage
 
-    - name: Check test coverage
+    - name: Check coverage
       run: |
         # Extract coverage percentage from the report (adapt based on your report format)
         coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
