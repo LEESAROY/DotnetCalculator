@@ -85,14 +85,18 @@ jobs:
     - name: List root directory
       run: ls -R
 
+    - name: List top-level directories
+      run: |
+        ls -d */
+
     - name: List DotnetCalculator directory
       run: |
-        cd DotnetCalculator
+        cd DotnetCalculator || exit 1
         ls -R
 
     - name: Run code quality checks
       run: |
-        cd DotnetCalculator # Adjust path if necessary
+        cd DotnetCalculator || exit 1
         dotnet format --check
 
     - name: Check coverage
