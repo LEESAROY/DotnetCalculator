@@ -48,13 +48,14 @@ jobs:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
 
     - name: Install ReportGenerator tool
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
       env:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
 
     - name: Generate coverage report
       run: |
-        reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
+        ~/.dotnet/tools/reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
       env:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
 
