@@ -84,6 +84,7 @@ jobs:
 
     - name: Run code quality checks
       run: |
+        cd DotnetCalculator # Adjust path if necessary
         dotnet format --check
 
     - name: Check coverage
