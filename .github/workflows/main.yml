@@ -47,17 +47,17 @@ jobs:
       env:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
 
-    - name: Install ReportGenerator tool
+    - name: Install ReportGenerator tool locally
       run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
+        dotnet tool install dotnet-reportgenerator-globaltool --tool-path ./tools
       env:
-        PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
+        PATH: ./tools:$PATH
 
     - name: Generate coverage report
       run: |
-        ~/.dotnet/tools/reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
+        ./tools/reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
       env:
-        PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
+        PATH: ./tools:$PATH
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
