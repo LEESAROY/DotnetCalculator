@@ -83,7 +83,8 @@ jobs:
       run: dotnet tool install -g dotnet-format
 
     - name: Run code quality checks
-      run: dotnet format --check
+      run: |
+        dotnet format --check
 
     - name: Check coverage
       run: |
