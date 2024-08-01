@@ -20,7 +20,7 @@ jobs:
       with:
         dotnet-version: '8.0.205'
 
-    - name: Install dependencies
+    - name: Restore dependencies
       run: dotnet restore
 
     - name: Build project
@@ -43,8 +43,17 @@ jobs:
 
     - name: Run unit tests with coverage
       run: |
-        dotnet test --no-build --collect:"XPlat Code Coverage" --logger:trx
-        dotnet tool install -g dotnet-reportgenerator-globaltool
+        dotnet test --no-build --collect:"XPlat Code Coverage"
+      env:
+        PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
+
+    - name: Install ReportGenerator tool
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      env:
+        PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
+
+    - name: Generate coverage report
+      run: |
         reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html
       env:
         PATH: ${{ runner.tool_cache }}/dotnet-tools/:$PATH
@@ -75,7 +84,6 @@ jobs:
 
     - name: Check coverage
       run: |
-        # Extract coverage percentage from the report
         coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%."
