@@ -79,27 +79,6 @@ jobs:
       with:
         dotnet-version: '8.0.205'
 
-    - name: List top-level files and directories
-      run: |
-        echo "Listing root directory:"
-        ls -la
-
-    - name: List directories in the root
-      run: |
-        echo "Listing top-level directories:"
-        ls -d */
-
-    - name: List contents of DotnetCalculator directory if it exists
-      run: |
-        if [ -d "DotnetCalculator" ]; then
-          echo "Directory DotnetCalculator found. Listing contents:"
-          cd DotnetCalculator
-          ls -la
-        else
-          echo "Directory DotnetCalculator not found."
-          exit 1
-        fi
-
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
 
@@ -108,8 +87,7 @@ jobs:
 
     - name: Check coverage
       run: |
-        # Extract coverage percentage from the report (adjust based on your report format)
-        coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
+        coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' reports/index.htm || echo "0")
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%."
           exit 1
