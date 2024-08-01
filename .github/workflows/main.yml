@@ -79,15 +79,20 @@ jobs:
       with:
         dotnet-version: '8.0.205'
 
-    - name: List root directory
-      run: ls -la
+    - name: List top-level files and directories
+      run: |
+        echo "Listing root directory:"
+        ls -la
 
-    - name: List top-level directories
-      run: ls -d */
+    - name: List directories in the root
+      run: |
+        echo "Listing top-level directories:"
+        ls -d */
 
-    - name: List contents of DotnetCalculator directory
+    - name: List contents of DotnetCalculator directory if it exists
       run: |
         if [ -d "DotnetCalculator" ]; then
+          echo "Directory DotnetCalculator found. Listing contents:"
           cd DotnetCalculator
           ls -la
         else
