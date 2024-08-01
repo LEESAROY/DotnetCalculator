@@ -67,38 +67,13 @@ jobs:
         name: coverage-report
         path: coverage-report
 
-  check-coverage:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.205'
-
-    - name: Verify coverage-report directory
-      run: |
-        if [ ! -d "coverage-report" ]; then
-          echo "Coverage report directory not found!"
-          exit 1
-        else
-          echo "Coverage report directory found."
-        fi
-
-    - name: Check if index.htm exists
+    - name: Verify coverage
       run: |
         if [ ! -f "coverage-report/index.htm" ]; then
           echo "Coverage report index.htm not found!"
           exit 1
-        else
-          echo "Coverage report index.htm found."
         fi
 
-    - name: Extract and check coverage percentage
-      run: |
         coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%. Current coverage: $coverage_percentage%"
@@ -106,4 +81,3 @@ jobs:
         else
           echo "Test coverage is above 90%. Current coverage: $coverage_percentage%"
         fi
-
