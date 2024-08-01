@@ -79,12 +79,10 @@ jobs:
       with:
         dotnet-version: '8.0.205'
 
-    - name: Check if coverage-report directory exists
+    - name: List coverage-report directory
       run: |
-        if [ ! -d "coverage-report" ]; then
-          echo "Coverage report directory not found!"
-          exit 1
-        fi
+        echo "Listing contents of the coverage-report directory:"
+        ls -R coverage-report || echo "Coverage report directory not found!"
 
     - name: Check if index.htm exists
       run: |
@@ -95,7 +93,6 @@ jobs:
 
     - name: Extract and check coverage percentage
       run: |
-        # Extract coverage percentage from the report (update regex based on actual report format)
         coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%. Current coverage: $coverage_percentage%"
