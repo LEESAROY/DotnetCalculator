@@ -93,14 +93,16 @@ jobs:
   
     - name: Extract coverage percentage from HTML
       run: |
-        coverage_percentage=$(awk -F'[<>]' '/Total Line Coverage:/ {getline; getline; getline; getline; getline; getline; getline; getline; getline; getline; print $3}' coverage-report/index.htm)
-        echo "Coverage percentage: ${coverage_percentage:-0}%"
+        coverage_percentage=$(awk -F'[<>]' '/Total Line Coverage:/ {getline; getline; getline; getline; getline; getline; getline; getline; getline; getline; getline; print $3}' coverage-report/index.htm)
+        echo "Coverage percentage: ${coverage_percentage:-0}"
   
-        if [ "$coverage_percentage" -lt 90 ]; then
-          echo "Test coverage is below 90%. Current coverage: ${coverage_percentage:-0}%"
-          exit 1
-        else
-          echo "Test coverage is above 90%. Current coverage: ${coverage_percentage:-0}%"
+        if [ -z "$coverage_percentage" ]; then
+          coverage_percentage=0
         fi
   
-    
+        if [ "$coverage_percentage" -lt 90 ]; then
+          echo "Test coverage is below 90%. Current coverage: $coverage_percentage%"
+          exit 1
+        else
+          echo "Test coverage is above 90%. Current coverage: $coverage_percentage%"
+        fi
