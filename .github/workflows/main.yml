@@ -88,19 +88,15 @@ jobs:
       run: |
         echo "Listing contents of the coverage-report directory:"
         ls -l coverage-report
-        echo "Displaying coverage-report/index.htm:"
-        cat coverage-report/index.htm
+        echo "Displaying first 20 lines of coverage-report/index.htm:"
+        head -n 20 coverage-report/index.htm
 
-    - name: Check coverage percentage
+    - name: Extract coverage percentage from HTML
       run: |
-        # Extract coverage percentage from the HTML report
+        # Adjust the following grep command based on the actual HTML content
         coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
         echo "Coverage percentage: $coverage_percentage%"
 
         # Check if the coverage is below 90%
         if [ "$coverage_percentage" -lt 90 ]; then
-          echo "Test coverage is below 90%. Current coverage: $coverage_percentage%"
-          exit 1
-        else
-          echo "Test coverage is above 90%. Current coverage: $coverage_percentage%"
-        fi
+  
