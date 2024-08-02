@@ -76,30 +76,29 @@ jobs:
       with:
         name: coverage-report
         path: coverage-report
-
+  
     - name: Verify coverage report existence
       run: |
         if [ ! -f "coverage-report/index.htm" ]; then
           echo "Coverage report index.htm not found!"
           exit 1
         fi
-
+  
     - name: Display coverage report content
       run: |
         echo "Listing contents of the coverage-report directory:"
         ls -l coverage-report
         echo "Displaying first 20 lines of coverage-report/index.htm:"
         head -n 20 coverage-report/index.htm
-
+  
     - name: Extract coverage percentage from HTML
       run: |
-        coverage_percentage=$(grep -oP '(?<=Total Line Coverage: )\d+' coverage-report/index.htm || echo "0")
+        coverage_percentage=$(grep -oP '(?<=<div class="card-body">.*?Total Line Coverage:</td><td class="limit-width ">)[0-9]+' coverage-report/index.htm || echo "0")
         echo "Coverage percentage: $coverage_percentage%"
-
+  
         if [ "$coverage_percentage" -lt 90 ]; then
           echo "Test coverage is below 90%. Current coverage: $coverage_percentage%"
           exit 1
         else
           echo "Test coverage is above 90%. Current coverage: $coverage_percentage%"
         fi
-
