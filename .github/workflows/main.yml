@@ -93,7 +93,7 @@ jobs:
 
     - name: Extract coverage percentage from HTML
       run: |
-        coverage_percentage=$(grep -oP 'Total Line Coverage: \K[0-9]+' coverage-report/index.htm || echo "0")
+        coverage_percentage=$(grep -oP '(?<=Total Line Coverage: )\d+' coverage-report/index.htm || echo "0")
         echo "Coverage percentage: $coverage_percentage%"
 
         if [ "$coverage_percentage" -lt 90 ]; then
@@ -102,3 +102,4 @@ jobs:
         else
           echo "Test coverage is above 90%. Current coverage: $coverage_percentage%"
         fi
+
